@@ -1,0 +1,111 @@
+# US-001: Amazon Product Search
+
+## Story Details
+- **ID**: SCRUM-201
+- **Priority**: Medium
+- **Sprint**: TBD
+- **Status**: Ready for Testing
+
+## User Story Statement
+**As a** customer  
+**I want to** search for a water bottle on Amazon  
+**So that** I can view available product options
+
+## Story Description
+Implement a simple product search flow that allows users to navigate to Amazon's homepage, enter a product keyword ("water bottle"), and view relevant search results. The feature must be reliable, performant, and display accurate product information.
+
+## Application Under Test
+| Field | Value |
+|-------|-------|
+| **Base URL** | https://www.amazon.com |
+| **Feature Path** | / (Homepage) |
+| **Login Required** | No |
+| **Test User** | N/A |
+
+---
+
+## Acceptance Criteria
+
+### AC1: Homepage Navigation
+**Given** I am a user visiting Amazon  
+**When** I open the Amazon homepage  
+**Then** I should see the search bar displayed prominently at the top of the page
+
+### AC2: Search Execution
+**Given** I am on the Amazon homepage  
+**When** I enter "water bottle" in the search bar  
+**And** click the search button  
+**Then** I should be redirected to the search results page with correct query parameter  
+**And** the page URL should contain the search keyword
+
+### AC3: Results Display
+**Given** I have searched for "water bottle"  
+**When** the results page loads successfully  
+**Then** I should see a list of products related to water bottles  
+**And** each product should display its name, price, image, and customer rating
+
+### AC4: Error Handling
+**Given** I am on the Amazon homepage  
+**When** I enter an invalid or empty search term  
+**Then** I should see an appropriate error message or "no results found" notification  
+**And** the page should not crash or redirect unexpectedly  
+**And** I should be able to perform a new search
+
+---
+
+## Business Rules
+- Search bar must be accessible and visible on the homepage
+- Search results must display only products relevant to the keyword
+- No login/authentication required for basic product search
+- Page must load within 5 seconds under normal network conditions
+- Search should support special characters and multi-word queries
+- Results should be sorted by relevance (default sorting)
+- Maximum 20 results displayed per page
+
+---
+
+## Technical Notes
+- **Automation Tool**: Playwright
+- **Target Browsers**: Chrome, Firefox, Safari
+- **Key Validations**:
+  - Search bar visibility and clickability
+  - Search results page load without errors
+  - Product listing accuracy (name, price, image, rating present)
+  - No JavaScript console errors
+  - Network requests complete successfully
+- **Performance SLA**: Page load ≤ 5 seconds (under standard network)
+- **Test Execution**: Cross-browser (Chrome, Firefox, Safari)
+
+---
+
+## Test Scenarios
+
+| # | Scenario | Expected Result |
+|---|----------|-----------------|
+| TS1 | Open homepage | Search bar visible and ready for input |
+| TS2 | Search for "water bottle" | Results page displays relevant products |
+| TS3 | Search with special characters | Results display or error message shown |
+| TS4 | Search with empty/blank input | Error or "no results" message displayed |
+| TS5 | Results page loads | All products show name, price, image, rating |
+| TS6 | Validate page performance | Page loads within 5 seconds |
+| TS7 | Cross-browser validation | All browsers (Chrome, Firefox, Safari) pass |
+
+---
+
+## Definition of Done
+- [x] All acceptance criteria mapped to test cases
+- [x] Automated Playwright test scripts created and passing
+- [x] Tests execute successfully on all target browsers
+- [x] Test execution results documented with pass/fail status
+- [x] Any defects identified and logged in tracking system
+- [x] Code committed to repository with peer review
+- [x] Test coverage report updated
+- [x] QA sign-off obtained
+
+---
+
+**Document Metadata**  
+- **Created**: April 8, 2026
+- **Last Updated**: April 8, 2026
+- **Version**: 2.0
+- **Format**: Standardized QA User Story Template

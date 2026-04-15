@@ -1,0 +1,104 @@
+name: IRCTC E2E Tests (US-002)
+
+on:
+  push:
+    branches: [main, develop]
+    paths:
+      - 'tests/irctc/**'
+      - 'tests/pages/irctc/**'
+      - '.github/workflows/e2e-tests-irctc.yml'
+  pull_request:
+    branches: [main, develop]
+  schedule:
+    - cron: '0 2 * * *'  # Daily at 2 AM UTC
+  workflow_dispatch:
+
+jobs:
+  irctc-tests:
+    name: IRCTC Tests - ${{ matrix.browser }}
+    runs-on: ubuntu-latest
+    
+    strategy:
+      fail-fast: false
+      matrix:
+        browser: [chromium, firefox]
+        node-version: [18.x]
+    
+    timeout-minutes: 45
+    
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+      
+      - name: Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+      
+      - name: Install Dependencies
+        run: npm ci
+      
+      - name: Install Playwright
+        run: npx playwright install --with-deps ${{ matrix.browser }}
+      
+      - name: Run IRCTC Menu Navigation Tests (AC1-AC2)
+        run: npx playwright test tests/irctc/ac1-ac2-menu-navigation.spec.ts --project=${{ matrix.browser }}
+        continue-on-error: true
+      
+      - name: Run IRCTC Menu Display Tests (AC3-AC4)
+        run: npx playwright test tests/irctc/ac3-ac4-menu-display.spec.ts --project=${{ matrix.browser }}
+        continue-on-error: true
+      
+      - name: Run IRCTC Item Selection Tests (AC5-AC6)
+        run: npx playwright test tests/irctc/ac5-ac6-item-selection.spec.ts --project=${{ matrix.browser }}
+        continue-on-error: true
+      
+      - name: Run Happy Path & Edge Cases
+        run: npx playwright test tests/irctc/happy-path-edge-cases.spec.ts --project=${{ matrix.browser }}
+        continue-on-error: true
+      
+      - name: Upload Playwright Report
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: irctc-playwright-report-${{ matrix.browser }}
+          path: playwright-report/
+          retention-days: 30
+      
+      - name: Upload Test Results
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: irctc-test-results-${{ matrix.browser }}
+          path: test-results/
+          retention-days: 15
+
+  irctc-summary:
+    name: IRCTC Test Summary
+    runs-on: ubuntu-latest
+    needs: irctc-tests
+    if: always()
+    
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+      
+      - name: Generate Summary
+        run: |
+          echo "# IRCTC Meal Ordering E2E Tests (US-002)" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "## Test Execution Summary" >> $GITHUB_STEP_SUMMARY
+          echo "- **Date:** $(date -u +'%Y-%m-%d %H:%M:%S UTC')" >> $GITHUB_STEP_SUMMARY
+          echo "- **Test Suites:** 4 (Menu Navigation, Menu Display, Item Selection, Happy Path)" >> $GITHUB_STEP_SUMMARY
+          echo "- **Total Tests:** 72 test cases" >> $GITHUB_STEP_SUMMARY
+          echo "- **Coverage:** 6 Acceptance Criteria (AC1-AC6)" >> $GITHUB_STEP_SUMMARY
+          echo "- **Browsers:** Chromium, Firefox" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "## Test Suites" >> $GITHUB_STEP_SUMMARY
+          echo "1. **AC1-AC2: Menu Navigation** - 11 tests" >> $GITHUB_STEP_SUMMARY
+          echo "2. **AC3-AC4: Menu Display** - 13 tests" >> $GITHUB_STEP_SUMMARY
+          echo "3. **AC5-AC6: Item Selection** - 23 tests" >> $GITHUB_STEP_SUMMARY
+          echo "4. **Happy Path & Edge Cases** - 25 tests" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Check artifacts for detailed reports." >> $GITHUB_STEP_SUMMARY

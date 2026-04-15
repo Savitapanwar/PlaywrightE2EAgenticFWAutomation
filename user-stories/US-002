@@ -1,0 +1,152 @@
+# US-002: IRCTC Meal Ordering - Breakfast Selection
+
+## Story Details
+- **ID**: SCRUM-202
+- **Priority**: High
+- **Sprint**: TBD
+- **Status**: Ready for Testing
+
+## User Story Statement
+**As a** passenger  
+**I want to** browse and select breakfast options from IRCTC meals menu  
+**So that** I can order food for my train journey
+
+## Story Description
+Enable users to navigate to the IRCTC (Indian Railways Catering and Tourism Corporation) meals section, access the cooked food menu, browse breakfast options, and manage their meal selections. The feature must allow users to select and deselect (cross/remove) breakfast items easily.
+
+## Application Under Test
+| Field | Value |
+|-------|-------|
+| **Base URL** | https://www.irctc.co.in/ |
+| **Feature Path** | /Meals (Meals Section) |
+| **Menu Path** | Top-right menu → MEALS → Cooked Food Menu |
+| **Login Required** | No |
+| **Test User** | N/A |
+
+---
+
+## Acceptance Criteria
+
+### AC1: Menu Navigation - Top Right Menu Access
+**Given** I am on the IRCTC homepage (https://www.irctc.co.in/)  
+**When** I look at the top-right corner of the page  
+**Then** I should see a menu button/icon  
+**And** the menu should be clickable and responsive
+
+### AC2: MEALS Section Access
+**Given** I have clicked on the menu button in the top-right  
+**When** the menu dropdown/navigation appears  
+**Then** I should see a "MEALS" option in the menu  
+**And** clicking MEALS should navigate to the meals section
+
+### AC3: Cooked Food Menu Display
+**Given** I have accessed the MEALS section  
+**When** the meals page loads successfully  
+**Then** I should see "Cooked Food Menu" option available  
+**And** the cooked food menu should be accessible and displayable
+
+### AC4: Breakfast Menu Category
+**Given** I am viewing the Cooked Food Menu  
+**When** I look for meal categories  
+**Then** I should see "Breakfast" as an available category  
+**And** clicking Breakfast should display breakfast meal options
+
+### AC5: Breakfast Item Selection
+**Given** I have selected the Breakfast category  
+**When** breakfast menu items are displayed  
+**Then** I should see breakfast items with details (name, price, image, description)  
+**And** I should be able to select breakfast items by clicking on them
+
+### AC6: Breakfast Item Removal/Deselection
+**Given** I have selected a breakfast item  
+**When** I want to remove/unselect the item (cross it)  
+**Then** I should see a "cross" or "remove" button on the selected item  
+**And** clicking the cross should deselect/remove the item from my selection  
+**And** the selected quantity or cart should update accordingly
+
+## User Journey
+
+```
+IRCTC Homepage 
+     ↓
+Click Menu (Top-Right) 
+     ↓
+Select MEALS 
+     ↓
+Select Cooked Food Menu 
+     ↓
+Select Breakfast Category 
+     ↓
+View Breakfast Items 
+     ↓
+Select Breakfast Item 
+     ↓
+Remove/Cross Breakfast Item (if needed)
+```
+
+## Additional Notes
+- The workflow focuses on meal browsing and selection/deselection
+- No actual payment or order confirmation in this user story
+- UI responsiveness on desktop and mobile viewports is important
+- All navigation steps should be intuitive and accessible  
+**And** the page should not crash or redirect unexpectedly  
+**And** I should be able to perform a new search
+
+---
+
+## Business Rules
+- Search bar must be accessible and visible on the homepage
+- Search results must display only products relevant to the keyword
+- No login/authentication required for basic product search
+- Page must load within 5 seconds under normal network conditions
+- Search should support special characters and multi-word queries
+- Results should be sorted by relevance (default sorting)
+- Maximum 20 results displayed per page
+
+---
+
+## Technical Notes
+- **Automation Tool**: Playwright
+- **Target Browsers**: Chrome, Firefox, Safari
+- **Key Validations**:
+  - Search bar visibility and clickability
+  - Search results page load without errors
+  - Product listing accuracy (name, price, image, rating present)
+  - No JavaScript console errors
+  - Network requests complete successfully
+- **Performance SLA**: Page load ≤ 5 seconds (under standard network)
+- **Test Execution**: Cross-browser (Chrome, Firefox, Safari)
+
+---
+
+## Test Scenarios
+
+| # | Scenario | Expected Result |
+|---|----------|-----------------|
+| TS1 | Open homepage | Search bar visible and ready for input |
+| TS2 | Search for "water bottle" | Results page displays relevant products |
+| TS3 | Search with special characters | Results display or error message shown |
+| TS4 | Search with empty/blank input | Error or "no results" message displayed |
+| TS5 | Results page loads | All products show name, price, image, rating |
+| TS6 | Validate page performance | Page loads within 5 seconds |
+| TS7 | Cross-browser validation | All browsers (Chrome, Firefox, Safari) pass |
+
+---
+
+## Definition of Done
+- [x] All acceptance criteria mapped to test cases
+- [x] Automated Playwright test scripts created and passing
+- [x] Tests execute successfully on all target browsers
+- [x] Test execution results documented with pass/fail status
+- [x] Any defects identified and logged in tracking system
+- [x] Code committed to repository with peer review
+- [x] Test coverage report updated
+- [x] QA sign-off obtained
+
+---
+
+**Document Metadata**  
+- **Created**: April 8, 2026
+- **Last Updated**: April 8, 2026
+- **Version**: 2.0
+- **Format**: Standardized QA User Story Template
