@@ -23,6 +23,7 @@ traces/
 .env.*.local
 .env.example
 .vscode/
+.vscode/mcp.json
 .idea/
 *.iml
 *.iws
